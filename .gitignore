@@ -1,0 +1,13 @@
+*~
+*.swl
+*.swp
+*.swo
+*.swn
+*.swm
+npm-debug.log*
+.nyc_output
+coverage/
+velocity.log
+.env
+yarn-error.log
+*.keystore
