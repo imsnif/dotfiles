@@ -2,6 +2,10 @@ URxvt.background: #000000
 URxvt.foreground: #ffffff
 URxvt.scrollBar: false
 
+! scroll up/down one line
+URxvt.keysym.M-k: command:\033]720;1\007
+URxvt.keysym.M-j: command:\033]721;1\007
+
 URxvt*buffered: true
 Urxvt*secondaryScroll:  true    # enable Shift-PageUp/Down in screen
 URxvt*saveLines: 5000
