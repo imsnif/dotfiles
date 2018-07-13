@@ -17,6 +17,7 @@ URxvt*font: xft: DejaVu Sans Mono for Powerline:pixelsize=13:antialias=true:hint
 *color4: #268bd2
 *color12: #268bd2
 
-! copy/paste with ctrl-shift-c and ctrl-shift-v
-URxvt.keysym.Shift-Control-V: eval:paste_clipboard
-URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.perl-ext-common: font-size,keyboard-select
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.keyboard-select.clipboard: true
