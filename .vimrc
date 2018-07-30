@@ -5,6 +5,7 @@ set expandtab "tabs => spaces
 set shiftwidth=2 "indentation
 set softtabstop=2 "tab is 2 spaces
 set scrolloff=3 "show 3 lines of context around cursor
+set laststatus=2 "always display statusline
 syntax enable "syntax colors
 
 filetype plugin indent on "indentation by filetype
@@ -34,18 +35,17 @@ map K 10k
 :command W w
 :command Q q
 
-"validate syntax
-:command Ww w | SyntasticCheck
-:command WW w | SyntasticCheck
-
-"linting
-let g:syntastic_javascript_checkers = ['standard']
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': []  }
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+"lint
+let g:ale_linters = {
+      \'javascript': ['eslint']
+      \}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fixers = {
+\   'javascript': ['eslint', 'remove_trailing_lines', 'trim_whitespace'],
+\}
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-w> :ALEFix<CR>
 
 "lightline theme
 let g:lightline = {
