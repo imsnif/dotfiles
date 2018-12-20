@@ -1,0 +1,27 @@
+#!/bin/bash
+ENV=$1
+hub_domain_login='https://bitsrc.io/bit-login'
+hub_domain='hub.bitsrc.io'
+analytics_domain='https://analytics.bitsrc.io/'
+registry='https://node.bitsrc.io'
+if [[ -z $ENV ]] 
+then
+ENV='prodcution'
+fi
+echo 'setting config for env:' ${ENV}
+if [  $ENV = 'stage'  ];
+then
+    hub_domain_login='https://stg.bitsrc.io/bit-login'
+    hub_domain='hub-stg.bitsrc.io'
+    analytics_domain='https://analytics-stg.bitsrc.io/'
+    registry='https://node-stg.bitsrc.io'
+fi
+bit config set registry $registry
+bit config set anonymous_reporting false
+bit config set error_reporting false
+bit config set analytics_reporting false
+bit config set analytics_domain $analytics_domain
+bit config set hub_domain_login $hub_domain_login
+bit config set hub_domain $hub_domain
+bit logout
+bit login

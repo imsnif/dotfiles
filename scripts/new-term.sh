@@ -2,7 +2,7 @@
 
 # start a detached session if there are none
 if [[ $(/usr/bin/tmux list-sessions | grep -v attached | wc -l) -eq 0 ]]; then
-  tmux new-session -d
+  cd /tmp && tmux new-session -d
 fi
 
 # find available detached session
@@ -15,7 +15,7 @@ nohup $(tmux list-sessions | grep -v attached | grep -v "$AVAILABLE_WIN:" | awk 
 nohup tmux new-session -d
 
 # init window in case we got a 2nd hand one
-tmux send-keys -t $AVAILABLE_WIN "cd ~; clear" ENTER
+tmux send-keys -t $AVAILABLE_WIN 'cd (cat /tmp/pwd); clear' ENTER
 
 # attach session
 tmux attach-session -t $AVAILABLE_WIN
