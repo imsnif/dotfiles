@@ -1,4 +1,4 @@
-URxvt.background: #000000
+URxvt.background: [85]#000000
 URxvt.foreground: #ffffff
 URxvt.scrollBar: false
 
@@ -11,13 +11,32 @@ Urxvt*secondaryScroll:  true    # enable Shift-PageUp/Down in screen
 URxvt*saveLines: 5000
 URxvt.urlLauncher: firefox
 
-URxvt*font: xft: DejaVu Sans Mono for Powerline:pixelsize=13:antialias=true:hinting=true
+URxvt*font: xft: Hack Nerd Font:style=Regular:pixelsize=13:antialias=true
 
-! Make blue not so dark
-*color4: #268bd2
-*color12: #268bd2
+URxvt*color0: #212121
+URxvt*color1: #c30771
+URxvt*color2: #10a778
+URxvt*color3: #a89c14
+URxvt*color4: #008ec4
+URxvt*color5: #523c79
+URxvt*color6: #20a5ba
+URxvt*color7: #e0e0e0
 
-URxvt.perl-ext-common: font-size,keyboard-select
+! bright
+
+URxvt*color8: #f1f1f1
+URxvt*color9: #fb007a
+URxvt*color10: #5fd7af
+URxvt*color11: #f3e430
+URxvt*color12: #20bbfc
+URxvt*color13: #6855de
+URxvt*color14: #4fb8cc
+URxvt*color14: #f1f1f1
+
+URxvt.perl-ext-common: font-size,keyboard-select,url-select
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.underline: true
+URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.keyboard-select.clipboard: true
