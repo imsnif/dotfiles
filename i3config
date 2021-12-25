@@ -17,7 +17,15 @@ font hermit 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+# font pango:DejaVu Sans Mono 8
+
+# font pango:DejaVu Sans Mono 8
+new_window none
+new_float normal
+
+# bindsym $mod+g float toggle
+# default_border pixel 1
+# default_floating_border pixel 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -28,8 +36,16 @@ font hermit 10
 
 # startup
 
-exec --no-startup-id xrandr --output eDP1 --primary --output DP2-1 --auto --right-of eDP1 --output DP2-3 --auto --right-of DP2-1
-exec --no-startup-id nm-applet
+# exec_always --no-startup-id xrandr --output eDP-1 --primary --output DP2-3 --auto --left-of eDP-1 --output DP2-1 --auto --left-of DP2-3
+exec_always --no-startup-id xrandr --output eDP-1 --primary --output DP-2-3 --auto --left-of eDP-1 --output DP-2-1 --auto --left-of DP-2-3
+exec_always --no-startup-id nm-applet
+exec_always --no-startup-id compton
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id /usr/bin/autocutsel
+# exec_always --no-startup-id /usr/bin/clipmenud
+exec_always /usr/bin/greenclip daemon
+# exec_always feh --randomize --bg-fill ~/wallpapers/*
+exec_always feh --randomize --bg-fill ~/Pictures/gil-and-aram/trips/*
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
 set $up k
@@ -41,13 +57,30 @@ set $right l
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec pwd > /tmp/pwd && alacritty
+# bindsym $mod+Return exec pwd > /tmp/pwd && alacritty
+# bindsym $mod+Return exec urxvt -cd "`xcwd`"
+bindsym $mod+Return exec alacritty --working-directory "`xcwd`"
 
 # kill focused window
-bindsym $mod+q kill
+# bindsym $mod+q kill
+bindsym $mod+q exec --no-startup-id /home/aram/scripts/i3-close-code-window.sh
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -theme "Arc-Dark" -show run
+bindsym $mod+p exec rofi -theme "Arc-Dark" -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $mod+x exec teiler -theme "Arc-Dark" --screenshot
+
+# shortcuts
+bindsym $mod+w exec i3-input -F 'exec --no-startup-id /home/aram/scripts/i3-new-ranger-workspace.sh %s' -P 'Name of new workspace: '
+bindsym $mod+m exec i3-input -F 'exec --no-startup-id /home/aram/scripts/i3-new-mosaic-workspace.sh %s' -P 'Name of new workspace: '
+
+# resize in normal mode
+
+bindsym $mod+y exec --no-startup-id /home/aram/scripts/i3-resize.sh left
+bindsym $mod+u exec --no-startup-id /home/aram/scripts/i3-resize.sh down
+bindsym $mod+i exec --no-startup-id /home/aram/scripts/i3-resize.sh up
+bindsym $mod+o exec --no-startup-id /home/aram/scripts/i3-resize.sh right
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -60,10 +93,10 @@ bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+$left move left
@@ -88,19 +121,19 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+g focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
-# new workspace
+# # new workspace
 bindsym $mod+c exec --no-startup-id "~/scripts/i3-new-workspace.sh"
 
 # toggle language change
@@ -111,11 +144,11 @@ bindsym $mod+control+h move workspace to output left
 bindsym $mod+control+l move workspace to output right
 
 # switch between workspace
-bindsym $mod+o workspace prev_on_output
-bindsym $mod+p workspace next_on_output
+bindsym $mod+parenleft workspace prev_on_output
+bindsym $mod+parenright workspace next_on_output
 
 # rename workspace
-bindsym $mod+comma exec i3-input -F 'rename workspace to %s' -P 'New name: '
+bindsym $mod+n exec i3-input -F 'rename workspace to %s' -P 'New name: '
 
 # move focused container to workspace
 bindsym $mod+Mod1+1 move container to workspace 1
@@ -160,14 +193,10 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-        tray_output primary
-}
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec "amixer -c 1 -q sset Master 1+ unmute"
@@ -179,10 +208,68 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
 # Touchpad controls
-bindsym XF86TouchpadToggle exec /some/path/toggletouchpad.sh # toggle touchpad
+# bindsym XF86TouchpadToggle exec /some/path/toggletouchpad.sh # toggle touchpad
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
+# for_window [class="^.*"] border pixel 1
+
+# Set Xresources colors:
+set_from_resource $darkblack	color0  #000000
+set_from_resource $black	color8  #000000
+set_from_resource $darkred	color1  #000000
+set_from_resource $red		color9  #000000
+set_from_resource $darkgreen	color2  #000000
+set_from_resource $green	color10 #000000
+set_from_resource $darkyellow	color3  #000000
+set_from_resource $yellow	color11 #000000
+set_from_resource $darkblue	color4  #000000
+set_from_resource $blue		color12 #000000
+set_from_resource $darkmagenta	color5  #000000
+set_from_resource $magenta	color13 #000000
+set_from_resource $darkcyan	color6  #000000
+set_from_resource $cyan		color14 #000000
+set_from_resource $darkwhite	color7  #000000
+set_from_resource $white	color15 #000000
+set $transparent		#00000000
+
+#                       BORDER		BACKGROUND	TEXT		INDICATOR   CHILD_BORDER
+client.focused		$transparent    $darkblue       $white          $blue        $darkblue
+client.unfocused	$transparent	$blue		$white		$darkblack   $darkblack
+client.focused_inactive	$transparent	$blue		$white		$darkblack   $darkblack
+client.urgent		$darkred	$darkred	$black		$darkred     $darkred
+client.urgent		$transparent $transparent $transparent $transparent $transparent
+client.background $black
+
+gaps inner 15
+gaps outer 0
+# smart_gaps on
+# hide_edge_borders both
+
+# move floating windows with keys
+bindsym $mod+r mode "move" focus floating
+mode "move" {
+    bindsym $mod+Tab focus right
+
+    bindsym Left  move left
+    bindsym Down  move down
+    bindsym Up    move up
+    bindsym Right move right
+
+    bindsym h     move left
+    bindsym j     move down
+    bindsym k     move up
+    bindsym l     move right
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# The side buttons move the window around
+# bindsym button2 --whole-window move left
+# bindsym button2 --whole-window move right

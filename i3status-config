@@ -12,6 +12,7 @@ general {
 }
 
 order += "disk /"
+order += "disk /home"
 order += "run_watch DHCP"
 order += "wireless _first_"
 order += "volume master"
@@ -34,10 +35,6 @@ battery 0 {
         format = "%status %percentage %remaining"
 }
 
-run_watch DHCP {
-        pidfile = "/var/run/dhclient*.pid"
-}
-
 tztime local {
         format = "%Y-%m-%d %H:%M:%S"
 }
@@ -49,11 +46,13 @@ load {
 disk "/" {
         format = "%avail"
 }
-
+disk "/home" {
+        format = "%avail"
+}
 volume master {
         format = "♪: %volume"
         format_muted = "♪: muted (%volume)"
-        device = "pulse:1"
+        device = "pulse:0"
         mixer = "Master"
         mixer_idx = 0
 }
